@@ -13,7 +13,7 @@ module.exports = {
     res.render('default/register')
   },
 
-  registerPost: (req, res) => {
+  getUser: (req, res) => {
     let errors = []
 
     if (!req.body.fullname) {

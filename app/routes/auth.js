@@ -1,89 +1,93 @@
-const express = require('express');
-const router = express.Router();
-const defaultController = require('../controllers/defaultController');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
-const User = require('../models/UserModel').User;
+const express = require('express')
+const router = express.Router()
+const authController = require('../controllers/auth/auth')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+const bcrypt = require('bcryptjs')
+const User = require('../models/user').User
 
 router.all('/*', (req, res, next) => {
+  req.app.locals.layout = 'default'
 
-    req.app.locals.layout = 'default';
-
-    next();
-});
-
-
-// noinspection JSCheckFunctionSignatures
-router.route('/')
-    .get(defaultController.index);
-
+  next()
+})
 
 // Defining Local Strategy
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passReqToCallback: true
-}, (req, email, password, done) => {
-    User.findOne({email: email}).then(user => {
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: 'email',
+      passReqToCallback: true
+    },
+    (req, email, password, done) => {
+      User.findOne({ email: email }).then(user => {
         if (!user) {
-            return done(null, false, req.flash('error-message', 'User not found with this email.'));
+          return done(
+            null,
+            false,
+            req.flash('error-message', 'User not found with this email.')
+          )
         }
 
         bcrypt.compare(password, user.password, (err, passwordMatched) => {
-            if (err) {
-                return err;
-            }
+          if (err) {
+            return err
+          }
 
-            if (!passwordMatched) {
-                return done(null, false, req.flash('error-message', 'Invalid Username or Password'));
-            }
+          if (!passwordMatched) {
+            return done(
+              null,
+              false,
+              req.flash('error-message', 'Invalid Username or Password')
+            )
+          }
 
-            return done(null, user, req.flash('success-message', 'Login Successful'));
-        });
+          return done(
+            null,
+            user,
+            req.flash('success-message', 'Login Successful')
+          )
+        })
+      })
+    }
+  )
+)
 
-    });
-}));
+passport.serializeUser(function (user, done) {
+  done(null, user.id)
+})
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
-});
-
-
-// noinspection JSCheckFunctionSignatures
-router.route('/login')
-    .get(defaultController.loginGet)
-    .post(passport.authenticate('local', {
-        successRedirect: '/user',
-        failureRedirect: '/login',
-        failureFlash: true,
-        successFlash: true,
-        session: true
-    }) ,defaultController.loginPost);
-
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user)
+  })
+})
 
 // noinspection JSCheckFunctionSignatures
-router.route('/register')
-    .get(defaultController.registerGet)
-    .post(defaultController.registerPost);
+router
+  .route('/login')
+  .get(authController.getLoginPage)
+  .post(
+    passport.authenticate('local', {
+      successRedirect: '/user',
+      failureRedirect: '/login',
+      failureFlash: true,
+      successFlash: true,
+      session: true
+    }),
+    defaultController.loginPost
+  )
 
-    router.route('/404')
-    .get(defaultController.NotFoundGet)
-
-router.route('/course/:id')
-    .get(defaultController.getSingleCourse)
-    .post(defaultController.submitComment);
-
+// noinspection JSCheckFunctionSignatures
+router
+  .route('/register')
+  .get(authController.getRegisterPage)
+  .post(authController.getRegisterPage)
 
 router.get('/logout', (req, res) => {
-    req.logOut();
-    req.flash('success-message', 'Logout was successful');
-    res.redirect('/');
-});
+  req.logOut()
+  req.flash('success-message', 'Logout was successful')
+  res.redirect('/')
+})
 
-module.exports = router;
+module.exports = router
