@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const User = require('../../models/user').User
 const Referral = require('../../models/referral').Referral
+const { v4: uuidv4 } = require('uuid')
 
 module.exports = {
   /* LOGIN ROUTES */
@@ -14,7 +15,7 @@ module.exports = {
     res.render('default/register')
   },
 
-  registerUser: (req, res) => {
+  registerUser: async (req, res, next) => {
     let errors = []
 
     if (!req.body.fullname) {
@@ -23,11 +24,8 @@ module.exports = {
     if (!req.body.email) {
       errors.push({ message: 'Email field is mandatory' })
     }
-    if (!req.body.password || !req.body.passwordConfirm) {
+    if (!req.body.password) {
       errors.push({ message: 'Password field is mandatory' })
-    }
-    if (req.body.password !== req.body.passwordConfirm) {
-      errors.push({ message: 'Passwords do not match' })
     }
 
     if (errors.length > 0) {
@@ -37,19 +35,26 @@ module.exports = {
         email: req.body.email
       })
     } else {
-      User.findOne({ email: req.body.email }).then(user => {
+      await User.findOne({ email: req.body.email }).then(user => {
         if (user) {
           req.flash('error-message', 'Email already exists, try to login.')
           res.redirect('/login')
         } else {
-          const newUser = new User(req.body)
+          const { fullname, email, password } = req.body
+          const newUser = new User({
+            fullname: fullname,
+            email: email,
+            password: password
+          })
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               newUser.password = hash
               newUser.save().then(user => {
                 const newReferrer = new Referral({
-                  referralId: user.id
+                  referralId: uuidv4(),
+                  userId: user._id
                 })
+                newReferrer.save()
                 req.flash('success-message', 'You are now registered')
                 res.redirect('/login')
               })

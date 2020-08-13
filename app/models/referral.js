@@ -11,7 +11,8 @@ const ReferralSchema = new Schema({
     unique: true
   },
   userId: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   createdAt: {
     type: Date,

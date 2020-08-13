@@ -9,14 +9,17 @@
         {{/if}}
         <div class=" container-box">
             <div class="card form-box">
-                <h3 class="text-center">Login To Your Account</h3>
-                <hr>
-                <label>Email</label>
-                <input type="text" class="form-control" name="email" placeholder="Your Email Address" />
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Your Password" />
-                <input type="submit" class="btn btn-outline-success" value="Login" />
-                <a href="/register" class="btn btn2 btn-outline-secondary">Register Here</a>
+                <form action="/login" method="post">
+                    <h3 class="text-center">Login To Your Account</h3>
+                    <hr>
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" placeholder="Your Email Address" />
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Your Password" />
+                    <input type="submit" class="btn btn-outline-success" value="Login" />
+                    <a href="/register" class="btn btn2 btn-outline-secondary">Register Here</a>
+                </form>
+
             </div>
         </div>
     </div>

@@ -69,7 +69,7 @@ router
   .get(authController.getLoginPage)
   .post(
     passport.authenticate('local', {
-      successRedirect: '/user',
+      successRedirect: '/profile',
       failureRedirect: '/login',
       failureFlash: true,
       successFlash: true,
