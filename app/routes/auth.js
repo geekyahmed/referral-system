@@ -74,15 +74,14 @@ router
       failureFlash: true,
       successFlash: true,
       session: true
-    }),
-    defaultController.loginPost
+    })
   )
 
 // noinspection JSCheckFunctionSignatures
 router
   .route('/register')
   .get(authController.getRegisterPage)
-  .post(authController.getRegisterPage)
+  .post(authController.registerUser)
 
 router.get('/logout', (req, res) => {
   req.logOut()

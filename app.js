@@ -1,17 +1,18 @@
 /* Importing Different Modules */
 
 const { globalVariables } = require('./config/config')
-
 const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const hbs = require('express-handlebars')
-const { mongoDbUrl, PORT } = require('./config/configuration')
+const { mongoDbUrl, PORT } = require('./config/config')
 const flash = require('connect-flash')
 const session = require('express-session')
 const { selectOption } = require('./config/customFunctions')
 const passport = require('passport')
 const app = express()
+const authRoutes = require('./app/routes/auth')
+const profileRoutes = require('./app/routes/profile')
 
 // Configure Mongoose to Connect to MongoDB
 mongoose
@@ -63,6 +64,9 @@ app.engine(
   })
 )
 app.set('view engine', 'handlebars')
+
+app.use('/', authRoutes)
+app.use('/profile', profileRoutes)
 
 /* Start The Server */
 app.listen(PORT, () => {

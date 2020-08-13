@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
-const User = require('../models/user').User
+const User = require('../../models/user').User
+const Referral = require('../../models/referral').Referral
 
 module.exports = {
   /* LOGIN ROUTES */
@@ -13,7 +14,7 @@ module.exports = {
     res.render('default/register')
   },
 
-  getUser: (req, res) => {
+  registerUser: (req, res) => {
     let errors = []
 
     if (!req.body.fullname) {
@@ -42,11 +43,13 @@ module.exports = {
           res.redirect('/login')
         } else {
           const newUser = new User(req.body)
-
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               newUser.password = hash
               newUser.save().then(user => {
+                const newReferrer = new Referral({
+                  referralId: user.id
+                })
                 req.flash('success-message', 'You are now registered')
                 res.redirect('/login')
               })

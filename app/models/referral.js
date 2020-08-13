@@ -3,12 +3,15 @@ const Schema = mongoose.Schema
 
 const ReferralSchema = new Schema({
   referralId: {
-    type: Schema.Types.ObjectId,
-    ref: 'user'
+    type: String,
+    unique: true
   },
   referralLink: {
     type: String,
     unique: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId
   },
   createdAt: {
     type: Date,
