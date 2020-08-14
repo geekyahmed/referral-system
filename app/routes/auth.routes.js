@@ -11,6 +11,10 @@ router.all('/*', (req, res, next) => {
   next()
 })
 
+//Redirect Home Route To Login Page
+router.get('/', (req, res) => {
+  res.redirect('/login')
+})
 // Defining Local Strategy
 passport.use(
   new LocalStrategy(

@@ -16,7 +16,11 @@ module.exports = {
       const referral = await ReferralService.checkReferer({
         referralLink: req.query.reflink
       })
-      res.render('default/register', { referral: referral })
+      res.render('default/register')
+      req.flash(
+        'success-message',
+        'You were referred by ' + referral.userId.fullname
+      )
     } else {
       res.render('default/register')
     }
