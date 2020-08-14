@@ -10,11 +10,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  referralId: {
-    type: Schema.Types.ObjectId,
-    ref: 'referral'
-  },
-  referrees: [
+  referrals: [
     {
       type: Schema.Types.ObjectId,
       ref: 'user'

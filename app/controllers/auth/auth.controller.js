@@ -11,12 +11,15 @@ module.exports = {
   },
 
   /* REGISTER ROUTES*/
-
   getRegisterPage: async (req, res) => {
-    const referral = await ReferralService.checkReferer({
-      referralLink: req.query.reflink
-    })
-    res.render('default/register', { referral: referral })
+    if (req.query.reflink > '') {
+      const referral = await ReferralService.checkReferer({
+        referralLink: req.query.reflink
+      })
+      res.render('default/register', { referral: referral })
+    } else {
+      res.render('default/register')
+    }
   },
 
   registerUser: async (req, res, next) => {
@@ -52,14 +55,14 @@ module.exports = {
           })
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
+              // const referrer = await User.findOne({ referralId: referra })
               newUser.password = hash
               newUser.save().then(user => {
                 const newReferrer = new Referral({
-                  referralId: uuidv4(),
                   referralLink: uuidv4(),
                   userId: user._id
                 })
-                newReferrer.push(newUser._id)
+
                 newReferrer.save()
                 req.flash('success-message', 'You are now registered')
                 res.redirect('/login')
