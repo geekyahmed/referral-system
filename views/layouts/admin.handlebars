@@ -1,25 +1,17 @@
 {{> admin/admin-header }}
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
-<!-- Navigation-->
-{{> admin/admin-topNav}}
+<body class="fixed-nav sticky-footer bg-dark">
+    <!-- Navigation-->
+    {{> admin/admin-topNav}}
 
+    <div class="">
 
+        {{> admin/messages}}
 
-<div class="content-wrapper">
-   
-    {{> admin/messages}}
-    
-    
-    {{{body}}}
-    <!-- /.container-fluid-->
-    <!-- /.content-wrapper-->
-    
-    
-    
-    
-{{> admin/admin-footer}}    
-</div>
+        {{{body}}}
+
+        {{> admin/admin-footer}}
+    </div>
 </body>
 
 </html>

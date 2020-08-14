@@ -69,7 +69,7 @@ router
   .get(authController.getLoginPage)
   .post(
     passport.authenticate('local', {
-      successRedirect: '/profile',
+      successRedirect: '/dashboard',
       failureRedirect: '/login',
       failureFlash: true,
       successFlash: true,
@@ -86,7 +86,7 @@ router
 router.get('/logout', (req, res) => {
   req.logOut()
   req.flash('success-message', 'Logout was successful')
-  res.redirect('/')
+  res.redirect('/login')
 })
 
 module.exports = router

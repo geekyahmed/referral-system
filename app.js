@@ -66,7 +66,7 @@ app.engine(
 app.set('view engine', 'handlebars')
 
 app.use('/', authRoutes)
-app.use('/profile', profileRoutes)
+app.use('/dashboard', profileRoutes)
 
 /* Start The Server */
 app.listen(PORT, () => {
