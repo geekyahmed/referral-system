@@ -13,8 +13,10 @@ module.exports = {
   /* REGISTER ROUTES*/
 
   getRegisterPage: async (req, res) => {
-    await ReferralService.checkReferer(req, res)
-    res.render('default/register')
+    const referral = await ReferralService.checkReferer({
+      referralLink: req.query.reflink
+    })
+    res.render('default/register', { referral: referral })
   },
 
   registerUser: async (req, res, next) => {

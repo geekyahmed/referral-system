@@ -1,21 +1,17 @@
 const Referral = require('../models/referral').Referral
 
 module.exports = {
-  checkReferer: async (req, res) => {
-    const referrerLink = req.query.reflink
-    const validReferral = await Referral.findOne({
-      referralLink: referrerLink
-    })
-    if (validReferral) {
-      await Referral.findOne({
-        referralLink: referrerLink
+  checkReferer: async query => {
+    try {
+      const referral = await Referral.findOne(query).populate({
+        path: 'userId'
       })
-        .populate('user')
-        .then(referredUser => {
-          return res.render('default/login', { referredUser: referredUser })
-        })
-    } else {
-      res.json({ msg: 'Invalid Referral Link' })
+      if (!referral) {
+        throw new Error('Invalid Referral')
+      }
+      return referral
+    } catch (err) {
+      console.log(err)
     }
   }
 }
