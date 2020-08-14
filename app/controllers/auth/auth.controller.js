@@ -63,6 +63,7 @@ module.exports = {
               newUser.password = hash
               newUser.save().then(user => {
                 const newReferrer = new Referral({
+                  referralId: uuidv4(),
                   referralLink: uuidv4(),
                   userId: user._id
                 })

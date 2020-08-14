@@ -10,6 +10,12 @@ const ReferralSchema = new Schema({
     type: String,
     unique: true
   },
+    referrals: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'user'
