@@ -37,7 +37,7 @@ passport.use(
             return done(
               null,
               false,
-              req.flash('error-message', 'Invalid Username or Password')
+              req.flash('error-message', 'Invalid Email or Password')
             )
           }
 

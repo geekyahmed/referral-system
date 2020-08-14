@@ -14,12 +14,6 @@ const ReferralSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
-  referree: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'user'
-    }
-  ],
   createdAt: {
     type: Date,
     default: Date.now()

@@ -59,6 +59,7 @@ module.exports = {
                   referralLink: uuidv4(),
                   userId: user._id
                 })
+                newReferrer.push(newUser._id)
                 newReferrer.save()
                 req.flash('success-message', 'You are now registered')
                 res.redirect('/login')

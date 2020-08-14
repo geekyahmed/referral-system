@@ -14,6 +14,12 @@ const UserSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'referral'
   },
+  referrees: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
   password: {
     type: String,
     required: true
