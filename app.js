@@ -11,8 +11,8 @@ const session = require('express-session')
 const { selectOption } = require('./config/customFunctions')
 const passport = require('passport')
 const app = express()
-const authRoutes = require('./app/routes/auth')
-const profileRoutes = require('./app/routes/profile')
+const authRoutes = require('./app/routes/auth.routes')
+const profileRoutes = require('./app/routes/profile.routes')
 
 // Configure Mongoose to Connect to MongoDB
 mongoose
@@ -32,7 +32,7 @@ app.use(
   express.urlencoded({
     extended: true
   })
-);
+)
 app.use(express.static(path.join(__dirname, 'public')))
 
 /*  Flash and Session*/
