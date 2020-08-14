@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const User = require('../../models/user').User
 const Referral = require('../../models/referral').Referral
+const ReferralService = require('../../services/referral')
 const { v4: uuidv4 } = require('uuid')
 
 module.exports = {
@@ -11,7 +12,8 @@ module.exports = {
 
   /* REGISTER ROUTES*/
 
-  getRegisterPage: (req, res) => {
+  getRegisterPage: async (req, res) => {
+    await ReferralService.checkReferer()
     res.render('default/register')
   },
 
@@ -52,6 +54,7 @@ module.exports = {
               newUser.save().then(user => {
                 const newReferrer = new Referral({
                   referralId: uuidv4(),
+                  referralLink: uuidv4(),
                   userId: user._id
                 })
                 newReferrer.save()

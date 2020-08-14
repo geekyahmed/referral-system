@@ -1,18 +1,24 @@
 const Referral = require('../models/referral').Referral
-const Referral = require('../models/referral').Referral
-const { v4: uuidv4 } = require('uuid')
 
 module.exports = {
-  generateReferralLink: async (req, res, next) => {
-    if (req.user) {
-      await Referral.findOne({ userId: req.user._id }).then(userReferral => {
-        const userReferralLink = new Schema({
-          referralLink: uuidv4()
-        })
-        userReferralLink.save().then(savedReferralLink => {
-          
-        })
+  checkReferer: async (req, res) => {
+    const referrerId = req.query.referrer
+    const referrerLink = req.query.reflink
+    const validReferral = await Referral.findOne({
+      referralLink: referrerLink,
+      referralId: referrerId
+    })
+    if (validReferral) {
+      await Referral.findOne({
+        referralId: referrerId,
+        referralLink: referrerLink
       })
+        .populate('user')
+        .then(referredUser => {
+          return res.render('default/login', { referredUser: referredUser })
+        })
+    } else {
+      res.json({ msg: 'Invalid Referral Link' })
     }
   }
 }
