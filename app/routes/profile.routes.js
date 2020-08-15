@@ -9,10 +9,8 @@ router.all('*', isUserAuthenticated, (req, res, next) => {
   next()
 })
 
-/* DEFAULT ADMIN INDEX ROUTE*/
+//Profile Route
 
 router.route('/').get(profileController.getProfile)
-
-/* VARIOUS ADMIN POST ENDPOINTS */
 
 module.exports = router

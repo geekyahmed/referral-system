@@ -24,6 +24,7 @@ passport.use(
     },
     (req, email, password, done) => {
       User.findOne({ email: email }).then(user => {
+        //Checks if User exists
         if (!user) {
           return done(
             null,
@@ -31,7 +32,7 @@ passport.use(
             req.flash('error-message', 'User not found with this email.')
           )
         }
-
+        //Campre passwords
         bcrypt.compare(password, user.password, (err, passwordMatched) => {
           if (err) {
             return err
@@ -66,7 +67,7 @@ passport.deserializeUser(function (id, done) {
   })
 })
 
-// noinspection JSCheckFunctionSignatures
+//Login Route
 router
   .route('/login')
   .get(authController.getLoginPage)
@@ -80,12 +81,13 @@ router
     })
   )
 
-// noinspection JSCheckFunctionSignatures
+// Register Route
 router
   .route('/register')
   .get(authController.getRegisterPage)
   .post(authController.registerUser)
 
+//Logout Route
 router.get('/logout', (req, res) => {
   req.logOut()
   req.flash('success-message', 'Logout was successful')
