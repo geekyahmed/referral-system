@@ -59,7 +59,6 @@ module.exports = {
           })
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
-              // const referrer = await User.findOne({ referralId: referra })
               newUser.password = hash
               newUser.save().then(user => {
                 const newReferrer = new Referral({
@@ -67,8 +66,7 @@ module.exports = {
                   referralLink: uuidv4(),
                   userId: user._id
                 })
-
-                newReferrer.save()
+                newReferrer.save();
                 req.flash('success-message', 'You are now registered')
                 res.redirect('/login')
               })
