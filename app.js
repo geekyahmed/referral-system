@@ -8,7 +8,6 @@ const hbs = require('express-handlebars')
 const { mongoDbUrl, PORT } = require('./config/config')
 const flash = require('connect-flash')
 const session = require('express-session')
-const { selectOption } = require('./config/customFunctions')
 const passport = require('passport')
 const app = express()
 const authRoutes = require('./app/routes/auth.routes')
@@ -57,10 +56,7 @@ app.use(globalVariables)
 app.engine(
   'handlebars',
   hbs({
-    defaultLayout: 'default',
-    helpers: {
-      select: selectOption
-    }
+    defaultLayout: 'default'
   })
 )
 app.set('view engine', 'handlebars')

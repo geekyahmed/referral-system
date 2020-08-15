@@ -1,9 +1,6 @@
 <div class="row">
     <div class="col-md-8 ml-3">
         <h1 class="mb-3">Welcome, {{ user.fullname }}</h1>
-        <h3>Your Referral ID : {{ loggedUser.referralId }}</h3>
         <h3>Referral Link : <a href="{{ generatedRefLink }}">{{ generatedRefLink }}</a></h3>
-        <h3>Your Referrals: {{ loggedUser.referrals.length }} </h3>
     </div>
-
 </div>
