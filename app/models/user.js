@@ -15,6 +15,10 @@ const UserSchema = new Schema({
     required: true,
     select: false,
   },
+  refId: {
+    type: Schema.Types.ObjectId,
+    ref: "referral",
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
