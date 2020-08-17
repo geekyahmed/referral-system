@@ -1,12 +1,16 @@
 const Joi = require("@hapi/joi")
 
-const registerValidation = (data) => {
+const registerValidation = async (data) => {
   const schema = Joi.object({
-    fullname: Joi.string.min(6).required(),
-    email: Joi.string.min(6).required().email,
-    passwoed: Joi.string.min(6).required(),
+    fullname: Joi.string().min(6).required(),
+    email: Joi.string().min(6).required().email(),
+    password: Joi.string().min(6).required(),
   })
-  return schema.validate(data)
+  try {
+    return schema.validateAsync(data)
+  } catch (error) {
+    throw error
+  }
 }
 
 // Login validation
@@ -19,4 +23,4 @@ const loginValidation = (data) => {
   return schema.validate(data)
 }
 
-module.exports = { registerValidation }
+module.exports = { registerValidation, loginValidation }
