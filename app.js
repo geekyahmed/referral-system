@@ -1,45 +1,46 @@
 /* Importing Different Modules */
 
-const { globalVariables } = require('./config/config')
-const express = require('express')
-const mongoose = require('mongoose')
-const path = require('path')
-const hbs = require('express-handlebars')
-const { mongoDbUrl, PORT } = require('./config/config')
-const flash = require('connect-flash')
-const session = require('express-session')
-const passport = require('passport')
+const { globalVariables } = require("./config/config")
+const express = require("express")
+const mongoose = require("mongoose")
+const path = require("path")
+const hbs = require("express-handlebars")
+const { mongoDbUrl, PORT } = require("./config/config")
+const flash = require("connect-flash")
+const session = require("express-session")
+const passport = require("passport")
 const app = express()
-const authRoutes = require('./app/routes/auth.routes')
-const profileRoutes = require('./app/routes/profile.routes')
+const authRoutes = require("./app/routes/auth.routes")
+const profileRoutes = require("./app/routes/profile.routes")
+const apiAuthRoutes = require("./app/api/routes/auth.routes")
 
 // Configure Mongoose to Connect to MongoDB
 mongoose
   .connect(mongoDbUrl, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
   })
-  .then(response => {
-    console.log('MongoDB Connected Successfully.')
+  .then((response) => {
+    console.log("MongoDB Connected Successfully.")
   })
-  .catch(err => {
-    console.log('Database connection failed.')
+  .catch((err) => {
+    console.log("Database connection failed.")
   })
 
 /* Configure express*/
 app.use(express.json())
 app.use(
   express.urlencoded({
-    extended: true
+    extended: true,
   })
 )
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, "public")))
 
 /*  Flash and Session*/
 app.use(
   session({
-    secret: 'anysecret',
+    secret: "anysecret",
     saveUninitialized: true,
-    resave: true
+    resave: true,
   })
 )
 
@@ -54,15 +55,16 @@ app.use(globalVariables)
 
 /* Setup View Engine To Use Handlebars */
 app.engine(
-  'handlebars',
+  "handlebars",
   hbs({
-    defaultLayout: 'default'
+    defaultLayout: "default",
   })
 )
-app.set('view engine', 'handlebars')
+app.set("view engine", "handlebars")
 
-app.use('/', authRoutes)
-app.use('/dashboard', profileRoutes)
+app.use("/", authRoutes)
+app.use("/dashboard", profileRoutes)
+app.use("/api", apiAuthRoutes)
 
 /* Start The Server */
 app.listen(PORT, () => {
