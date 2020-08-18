@@ -1,7 +1,7 @@
 const { User } = require("../../../models/user")
 const { Referral } = require("../../../models/referral")
-
 const hashPassword = require("../../utils/hashPassword")
+const generateResponse = require("../../utils/utils")
 const {
   registerValidation,
   loginValidation,
@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
 
     const emailExist = await User.findOne({ email: req.body.email })
     if (emailExist) {
-      return res.status(400).json({ error: "Email already exists" })
+      return generateResponse(res, 400, "Email Already Exists")
     }
 
     req.body.password = await hashPassword(req.body.password)
@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
       const referral = await referralService.checkReferer({
         referralId: req.query.reflink,
       })
-      // Saves the refId as the person that refferd
+      // Saves the refId as the person that reffered
       user.refId = referral
     }
 
@@ -80,7 +80,7 @@ const loginUser = async (req, res) => {
     const token = jwt.sign({ _id: user._id }, SECRET)
     return res.status(200).json({ access_token: token })
   } catch (err) {
-    return res.status(400).json({ error_msg: err.message })
+    return generateResponse(res, 200, err.message)
   }
 }
 
