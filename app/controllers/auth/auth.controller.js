@@ -64,7 +64,7 @@ module.exports = {
           })
           //Generate SALT with 10 rounds
           bcrypt.genSalt(10, (err, salt) => {
-            //Hash pzssword before saving to database
+            //Hash password before saving to database
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               newUser.password = hash
               //Save user to database
