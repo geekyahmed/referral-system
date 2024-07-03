@@ -35,7 +35,7 @@ app.use(
 )
 app.use(express.static(path.join(__dirname, "public")))
 
-/*  Flash and Session*/
+/*  Flash and Session and some other things*/
 app.use(
   session({
     secret: "anysecret",
